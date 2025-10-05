@@ -1,0 +1,79 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-6f7e0527394e2de34274.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "chaima",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "chaima::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-chaima-Debug-f85c2875e13acc4c347a.json",
+					"name" : "chaima",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "chaima_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-chaima_autogen-Debug-7a19ca92f79229baa62a.json",
+					"name" : "chaima_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "chaima_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-chaima_autogen_timestamp_deps-Debug-47c1cb6908d39a0f0ec1.json",
+					"name" : "chaima_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/chaim/OneDrive/Desktop/QT/chaima/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug",
+		"source" : "C:/Users/chaim/OneDrive/Desktop/QT/chaima"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}
