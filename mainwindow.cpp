@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     connect(ui->client, &QPushButton::clicked, this, [=](){
-        ui->sw->setCurrentWidget(ui->command);
+        ui->sw->setCurrentWidget(ui->cli);
     });
 
     connect(ui->command_2, &QPushButton::clicked, this, [=](){
