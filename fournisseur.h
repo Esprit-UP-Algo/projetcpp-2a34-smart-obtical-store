@@ -2,7 +2,6 @@
 #define FOURNISSEUR_H
 
 #include <QString>
-#include <QSqlQuery>
 #include <QSqlQueryModel>
 
 class Fournisseur
@@ -15,27 +14,29 @@ public:
     Fournisseur();
     Fournisseur(int, QString, QString, QString, QString, QString);
 
-    // Getters
-    int getId();
-    QString getNomSociete();
-    QString getAdresse();
-    QString getEmail();
-    QString getTelephone();
-    QString getSpecialite();
+    // getters / setters
+    int getId() const;
+    QString getNomSociete() const;
+    QString getAdresse() const;
+    QString getEmail() const;
+    QString getTelephone() const;
+    QString getSpecialite() const;
 
-    // Setters
     void setId(int);
-    void setNomSociete(QString);
-    void setAdresse(QString);
-    void setEmail(QString);
-    void setTelephone(QString);
-    void setSpecialite(QString);
+    void setNomSociete(const QString &);
+    void setAdresse(const QString &);
+    void setEmail(const QString &);
+    void setTelephone(const QString &);
+    void setSpecialite(const QString &);
 
-    // Méthodes CRUD
-    bool ajouter();
-    QSqlQueryModel *afficher();
-    bool supprimer(int);
-    bool modifier();
+    // CRUD
+    bool ajouter() const;
+    // afficher avec filtre (WHERE) et ordre (ORDER BY)
+    QSqlQueryModel *afficher(const QString &filter = QString(), const QString &orderBy = QString()) const;
+    bool supprimer(int id) const;
+    bool modifier() const;
+
+    // utilitaires
+    static QSqlQueryModel* chercher(const QString &term); // recherche globale
 };
-
 #endif // FOURNISSEUR_H
