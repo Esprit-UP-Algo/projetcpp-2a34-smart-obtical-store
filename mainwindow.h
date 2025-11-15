@@ -2,8 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTableWidget>
+#include <QPdfWriter>
+#include <QPageSize>
+#include <QPainter>
 #include "fournisseur.h"
-#include <QSqlQueryModel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,24 +20,31 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
-    void on_pushButton_clicked();   // Ajouter
-    void on_pushButton_2_clicked(); // Modifier
-    void on_pushButton_3_clicked(); // Annuler
-    void on_pushButton_8_clicked(); // Supprimer
+    void remplirTable(QSqlQueryModel *model, QTableWidget *table);
 
-    void on_pushButton_7_clicked(); // Rechercher
-    void on_pushButton_10_clicked(); // Trier
-    void on_pushButton_9_clicked(); // Exporter PDF
+private slots:
+    void on_btnAjoutFournisseur_clicked();
+    void on_btnModifierFournisseur_clicked();
+    void on_btnSupprimerFournisseur_clicked();
+    void on_btnAnnulerFournisseur_clicked();
+
+    void on_btnRechercheFournisseur_clicked();
+    void on_btnTriFournisseur_clicked();
+    void on_btnExporterPDFFournisseur_clicked();
+    void on_btnStatistiqueFournisseur_clicked();
 
 private:
     Ui::MainWindow *ui;
-    Fournisseur Ftmp;
+    Fournisseur F;
+    // === AJOUTE CES DÉCLARATIONS ===
+    void refreshMainTable();
+    bool validateInputs(long long &outId, QString &outNom, QString &outAdresse,
+                        QString &outEmail, QString &outTelephone, QString &outSpecialite,
+                        QString &errMsg);
+    void populateTableFromModel(QSqlQueryModel *model, QTableWidget *table);
 
-    // Helpers
-    void remplirTable(QSqlQueryModel *model);
-    bool controleSaisie(); // validation stricte demandée
-    QString buildFilterFromSearch(const QString &term);
-    QString currentOrderBy(); // construit ORDER BY selon comboBox_3 + radio buttons
+    // Supprime cette ligne si tu n'utilises pas remplirTable
+    // void remplirTable(QSqlQueryModel *model, QTableWidget *table);
 };
+
 #endif // MAINWINDOW_H
