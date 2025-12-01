@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MessagerieDialog</class>
+ <widget class="QDialog" name="MessagerieDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>900</width>
+    <height>650</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>📨 Messagerie Interne</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+    background-color: #f5f6fa;
+}
+
+QTabWidget::pane {
+    border: 1px solid #dfe4ea;
+    background: white;
+    border-radius: 5px;
+}
+
+QTabBar::tab {
+    background: #e8e8e8;
+    color: #2f3640;
+    padding: 12px 25px;
+    margin-right: 2px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight: bold;
+}
+
+QTabBar::tab:selected {
+    background: white;
+    color: #3498db;
+    border-bottom: 3px solid #3498db;
+}
+
+QTabBar::tab:hover {
+    background: #f1f2f6;
+}
+
+QPushButton {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+QPushButton:hover {
+    background-color: #2980b9;
+}
+
+QPushButton:pressed {
+    background-color: #21618c;
+}
+
+QPushButton#pushButton_supprimer_recu,
+QPushButton#pushButton_supprimer_envoye {
+    background-color: #e74c3c;
+}
+
+QPushButton#pushButton_supprimer_recu:hover,
+QPushButton#pushButton_supprimer_envoye:hover {
+    background-color: #c0392b;
+}
+
+QPushButton#pushButton_rafraichir_recus,
+QPushButton#pushButton_rafraichir_envoyes {
+    background-color: #27ae60;
+}
+
+QPushButton#pushButton_rafraichir_recus:hover,
+QPushButton#pushButton_rafraichir_envoyes:hover {
+    background-color: #229954;
+}
+
+QLineEdit, QTextEdit, QComboBox {
+    border: 2px solid #dfe4ea;
+    border-radius: 5px;
+    padding: 8px;
+    background: white;
+    font-size: 13px;
+}
+
+QLineEdit:focus, QTextEdit:focus, QComboBox:focus {
+    border: 2px solid #3498db;
+}
+
+QLabel {
+    color: #2f3640;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+QTableView {
+    border: 1px solid #dfe4ea;
+    border-radius: 5px;
+    background-color: white;
+    selection-background-color: #3498db;
+    gridline-color: #ecf0f1;
+}
+
+QTableView::item {
+    padding: 5px;
+}
+
+QTableView::item:selected {
+    background-color: #3498db;
+    color: white;
+}
+
+QHeaderView::section {
+    background-color: #34495e;
+    color: white;
+    padding: 8px;
+    border: none;
+    font-weight: bold;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label_titre">
+     <property name="styleSheet">
+      <string notr="true">font-size: 24px;
+font-weight: bold;
+color: #2c3e50;
+padding: 10px;</string>
+     </property>
+     <property name="text">
+      <string>📨 Messagerie Interne</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_notifications">
+     <property name="styleSheet">
+      <string notr="true">background-color: #e74c3c;
+color: white;
+padding: 8px;
+border-radius: 5px;
+font-size: 14px;
+font-weight: bold;</string>
+     </property>
+     <property name="text">
+      <string>🔔 Vous avez 0 nouveau(x) message(s)</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="tab_recus">
+      <attribute name="title">
+       <string>📥 Boîte de réception</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QTableView" name="tableView_recus">
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+         </property>
+         <property name="sortingEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QPushButton" name="pushButton_lire">
+           <property name="text">
+            <string>📖 Lire le message</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_supprimer_recu">
+           <property name="text">
+            <string>🗑️ Supprimer</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_rafraichir_recus">
+           <property name="text">
+            <string>🔄 Rafraîchir</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_envoyes">
+      <attribute name="title">
+       <string>📤 Messages envoyés</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QTableView" name="tableView_envoyes">
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+         </property>
+         <property name="sortingEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QPushButton" name="pushButton_voir_envoye">
+           <property name="text">
+            <string>🔄 Rafraîchire message</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_rafraichir_envoyes">
+           <property name="text">
+            <string>👁️ Voir le message</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_nouveau">
+      <attribute name="title">
+       <string>✉️ Nouveau message</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="styleSheet">
+          <string notr="true">QGroupBox {
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #2c3e50;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 15px;
+    padding: 0 5px;
+    background-color: white;
+}</string>
+         </property>
+         <property name="title">
+          <string>📝 Composer un message</string>
+         </property>
+         <layout class="QFormLayout" name="formLayout">
+          <property name="horizontalSpacing">
+           <number>15</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>15</number>
+          </property>
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>25</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_destinataire">
+            <property name="text">
+             <string>👤 Destinataire:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="comboBox_destinataire">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_sujet">
+            <property name="text">
+             <string>📌 Sujet:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lineEdit_sujet">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="placeholderText">
+             <string>Entrez le sujet du message...</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_message">
+            <property name="text">
+             <string>💬 Message:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QTextEdit" name="textEdit_contenu">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>200</height>
+             </size>
+            </property>
+            <property name="placeholderText">
+             <string>Écrivez votre message ici...</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_envoyer">
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>45</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+    background-color: #27ae60;
+    font-size: 16px;
+}
+
+QPushButton:hover {
+    background-color: #229954;
+}</string>
+           </property>
+           <property name="text">
+            <string>📨 Envoyer le message</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
