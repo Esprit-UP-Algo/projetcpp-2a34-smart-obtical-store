@@ -37,6 +37,39 @@ bool Client::ajouter(QString *errMsg)
     }
     return true;
 }
+// ============= VALIDATIONS =============
+
+bool Client::isValidId() const {
+    // ID doit avoir exactement 6 chiffres (100000-999999)
+    return id >= 100000 && id <= 999999;
+}
+
+bool Client::isValidAge() const {
+    // Âge doit avoir maximum 3 chiffres (1-999)
+    return age > 0 && age < 1000;
+}
+
+bool Client::isValidPoints() const {
+    // Points : 0 à 4 chiffres (0-9999)
+    return pointsFidelite >= 0 && pointsFidelite <= 9999;
+}
+
+bool Client::isValidTelephone() const {
+    // Téléphone doit avoir exactement 8 chiffres
+    if (telephone.length() != 8) return false;
+
+    // Vérifier que ce sont tous des chiffres
+    for (QChar c : telephone) {
+        if (!c.isDigit()) return false;
+    }
+    return true;
+}
+
+bool Client::isValidEmail() const {
+    // Format email basique : xxx@yyy.zzz
+    QRegularExpression emailRegex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    return emailRegex.match(email).hasMatch();
+}
 
 // ✏️ MODIFIER (UPDATE)
 bool Client::modifier(QString *errMsg)

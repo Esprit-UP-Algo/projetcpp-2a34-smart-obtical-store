@@ -25,9 +25,9 @@ Connection::~Connection()
 // Établir la connexion Oracle via ODBC
 bool Connection::createConnection()
 {
-    db.setDatabaseName("Projet_2A2526"); // Nom du DSN
-    db.setUserName("rahma");
-    db.setPassword("rahma123");
+    db.setDatabaseName("smartopticalstore"); // Nom du DSN
+    db.setUserName("maycem");
+    db.setPassword("1234");
 
     if (db.open()) {
         qDebug() << "✅ Connexion Oracle établie";

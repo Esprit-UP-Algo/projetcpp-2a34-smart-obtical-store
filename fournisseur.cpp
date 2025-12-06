@@ -1,155 +1,178 @@
 #include "fournisseur.h"
 #include <QSqlQuery>
-#include <QSqlError>
 #include <QDebug>
+#include <QSqlError>  // Ajoutez cette ligne
 
+// Constructors
 Fournisseur::Fournisseur() : id(0) {}
-Fournisseur::Fournisseur(qint64 id, const QString &nom, const QString &adr,
-                         const QString &em, const QString &tel, const QString &spec)
-    : id(id), nom_societe(nom), adresse(adr), email(em), telephone(tel), specialite(spec) {}
+
+Fournisseur::Fournisseur(int id, const QString &nom, const QString &adresse,
+                         const QString &email, const QString &telephone, const QString &specialite)
+    : id(id), nom(nom), adresse(adresse), email(email), telephone(telephone), specialite(specialite)
+{}
 
 // Getters
-qint64 Fournisseur::getId() const { return id; }
-QString Fournisseur::getNomSociete() const { return nom_societe; }
+int Fournisseur::getId() const { return id; }
+QString Fournisseur::getNom() const { return nom; }
 QString Fournisseur::getAdresse() const { return adresse; }
 QString Fournisseur::getEmail() const { return email; }
 QString Fournisseur::getTelephone() const { return telephone; }
 QString Fournisseur::getSpecialite() const { return specialite; }
 
 // Setters
-void Fournisseur::setId(qint64 v) { id = v; }
-void Fournisseur::setNomSociete(const QString &s) { nom_societe = s; }
-void Fournisseur::setAdresse(const QString &s) { adresse = s; }
-void Fournisseur::setEmail(const QString &s) { email = s; }
-void Fournisseur::setTelephone(const QString &s) { telephone = s; }
+void Fournisseur::setId(int i) { id = i; }
+void Fournisseur::setNom(const QString &n) { nom = n; }
+void Fournisseur::setAdresse(const QString &a) { adresse = a; }
+void Fournisseur::setEmail(const QString &e) { email = e; }
+void Fournisseur::setTelephone(const QString &t) { telephone = t; }
 void Fournisseur::setSpecialite(const QString &s) { specialite = s; }
 
-bool Fournisseur::ajouter() const
+// ------------------ AJOUT --------------------
+bool Fournisseur::ajouter()
 {
-    QSqlQuery q;
-    q.prepare("INSERT INTO FOURNISSEUR (ID, NOM_SOCIETE, ADRESSE, EMAIL, TELEPHONE, SPECIALITE) "
-              "VALUES (:id, :nom, :adresse, :email, :telephone, :specialite)");
-    q.bindValue(":id", QVariant::fromValue(id));
-    q.bindValue(":nom", nom_societe);
-    q.bindValue(":adresse", adresse);
-    q.bindValue(":email", email);
-    q.bindValue(":telephone", telephone);
-    q.bindValue(":specialite", specialite);
-    bool ok = q.exec();
-    if (!ok) qDebug() << "Fournisseur::ajouter error:" << q.lastError().text();
-    return ok;
-}
-
-QSqlQueryModel* Fournisseur::afficher() const
-{
-    QSqlQueryModel *model = new QSqlQueryModel();
     QSqlQuery query;
-    query.prepare("SELECT ID, NOM_SOCIETE, ADRESSE, EMAIL, TELEPHONE, SPECIALITE FROM FOURNISSEUR");
-    query.exec();
-    model->setQuery(std::move(query));
+    query.prepare("INSERT INTO FOURNISSEUR (ID_F, NOM_SOCIETE, ADRESSE_F, MAIL_F, TEL_F, SPECIALITE) "
+                  "VALUES (:id, :nom, :adresse, :email, :telephone, :specialite)");
 
-    // Définir les headers
-    model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
-    model->setHeaderData(1, Qt::Horizontal, QObject::tr("Nom Société"));
-    model->setHeaderData(2, Qt::Horizontal, QObject::tr("Adresse"));
-    model->setHeaderData(3, Qt::Horizontal, QObject::tr("Email"));
-    model->setHeaderData(4, Qt::Horizontal, QObject::tr("Téléphone"));
-    model->setHeaderData(5, Qt::Horizontal, QObject::tr("Spécialité"));
+    query.bindValue(":id", id);
+    query.bindValue(":nom", nom);
+    query.bindValue(":adresse", adresse);
+    query.bindValue(":email", email);
+    query.bindValue(":telephone", telephone);
+    query.bindValue(":specialite", specialite);
 
-    return model;
-}
-
-bool Fournisseur::supprimer(qint64 id) const
-{
-    QSqlQuery q;
-    q.prepare("DELETE FROM FOURNISSEUR WHERE ID = :id");
-    q.bindValue(":id", QVariant::fromValue(id));
-    bool ok = q.exec();
-    if (!ok) qDebug() << "Fournisseur::supprimer error:" << q.lastError().text();
-    return ok;
-}
-
-bool Fournisseur::modifier() const
-{
-    QSqlQuery q;
-    q.prepare("UPDATE FOURNISSEUR SET NOM_SOCIETE=:nom, ADRESSE=:adresse, EMAIL=:email, TELEPHONE=:telephone, SPECIALITE=:specialite WHERE ID=:id");
-    q.bindValue(":id", QVariant::fromValue(id));
-    q.bindValue(":nom", nom_societe);
-    q.bindValue(":adresse", adresse);
-    q.bindValue(":email", email);
-    q.bindValue(":telephone", telephone);
-    q.bindValue(":specialite", specialite);
-    bool ok = q.exec();
-    if (!ok) qDebug() << "Fournisseur::modifier error:" << q.lastError().text();
-    return ok;
-}
-
-QSqlQueryModel* Fournisseur::rechercher(const QString &term) const
-{
-    QSqlQueryModel *model = new QSqlQueryModel();
-    bool isNum = false;
-    qint64 val = term.toLongLong(&isNum);
-
-    QSqlQuery q;
-    if (isNum) {
-        q.prepare("SELECT ID, NOM_SOCIETE, ADRESSE, EMAIL, TELEPHONE, SPECIALITE FROM FOURNISSEUR WHERE ID = :id");
-        q.bindValue(":id", QVariant::fromValue(val));
-    } else {
-        q.prepare("SELECT ID, NOM_SOCIETE, ADRESSE, EMAIL, TELEPHONE, SPECIALITE FROM FOURNISSEUR WHERE LOWER(NOM_SOCIETE) LIKE LOWER(:t) OR LOWER(SPECIALITE) LIKE LOWER(:t) OR LOWER(ADRESSE) LIKE LOWER(:t) OR LOWER(EMAIL) LIKE LOWER(:t)");
-        q.bindValue(":t", "%" + term + "%");
+    if (!query.exec()) {
+        qDebug() << "Erreur d'ajout fournisseur:" << query.lastError().text();
+        return false;
     }
-    q.exec();
-    model->setQuery(std::move(q));
+    return true;
+}
 
-    // Définir les headers
-    model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
-    model->setHeaderData(1, Qt::Horizontal, QObject::tr("Nom Société"));
-    model->setHeaderData(2, Qt::Horizontal, QObject::tr("Adresse"));
-    model->setHeaderData(3, Qt::Horizontal, QObject::tr("Email"));
-    model->setHeaderData(4, Qt::Horizontal, QObject::tr("Téléphone"));
-    model->setHeaderData(5, Qt::Horizontal, QObject::tr("Spécialité"));
+// ------------------ MODIFICATION --------------------
+bool Fournisseur::modifier()
+{
+    QSqlQuery query;
+    query.prepare("UPDATE FOURNISSEUR SET NOM_SOCIETE = :nom, ADRESSE_F = :adresse, "
+                  "MAIL_F = :email, TEL_F = :telephone, SPECIALITE = :specialite "
+                  "WHERE ID_F = :id");
+
+    query.bindValue(":id", id);
+    query.bindValue(":nom", nom);
+    query.bindValue(":adresse", adresse);
+    query.bindValue(":email", email);
+    query.bindValue(":telephone", telephone);
+    query.bindValue(":specialite", specialite);
+
+    if (!query.exec()) {
+        qDebug() << "Erreur de modification fournisseur:" << query.lastError().text();
+        return false;
+    }
+    return true;
+}
+
+bool Fournisseur::annuler(int id)
+{
+    return supprimer(id);  // Utilise la même fonction
+}
+
+bool Fournisseur::supprimer(int id)
+{
+    QSqlQuery query;
+    query.prepare("DELETE FROM FOURNISSEUR WHERE ID_F = :id");
+    query.bindValue(":id", id);
+
+    if (!query.exec()) {
+        qDebug() << "Erreur de suppression fournisseur:" << query.lastError().text();
+        return false;
+    }
+    return true;
+}
+
+QSqlQueryModel* Fournisseur::afficher()
+{
+    QSqlQueryModel *model = new QSqlQueryModel();
+    QString queryStr = "SELECT ID_F, NOM_SOCIETE, ADRESSE_F, MAIL_F, TEL_F, SPECIALITE "
+                       "FROM FOURNISSEUR ORDER BY ID_F";
+
+    model->setQuery(queryStr);
+
+    // Vérifiez s'il y a une erreur
+    if (model->lastError().isValid()) {
+        qDebug() << "Erreur dans afficher():" << model->lastError().text();
+    } else {
+        qDebug() << "Nombre de fournisseurs trouvés:" << model->rowCount();
+    }
+
+    model->setHeaderData(0, Qt::Horizontal, "ID");
+    model->setHeaderData(1, Qt::Horizontal, "Nom Société");
+    model->setHeaderData(2, Qt::Horizontal, "Adresse");
+    model->setHeaderData(3, Qt::Horizontal, "Email");
+    model->setHeaderData(4, Qt::Horizontal, "Téléphone");
+    model->setHeaderData(5, Qt::Horizontal, "Spécialité");
 
     return model;
 }
 
-QSqlQueryModel* Fournisseur::trier(const QString &field, bool asc) const
+QSqlQueryModel* Fournisseur::rechercher(const QString &critere)
 {
-    QString f;
-    if (field == "id") f = "ID";
-    else if (field == "nom société") f = "NOM_SOCIETE";
-    else if (field == "spécialité") f = "SPECIALITE";
-    else f = "ID"; // défaut
-
-    QString order = asc ? "ASC" : "DESC";
-
     QSqlQueryModel *model = new QSqlQueryModel();
-    QSqlQuery query;
-    query.prepare(QString("SELECT ID, NOM_SOCIETE, ADRESSE, EMAIL, TELEPHONE, SPECIALITE FROM FOURNISSEUR ORDER BY %1 %2").arg(f, order));
-    query.exec();
-    model->setQuery(std::move(query));
 
-    // Définir les headers
-    model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
-    model->setHeaderData(1, Qt::Horizontal, QObject::tr("Nom Société"));
-    model->setHeaderData(2, Qt::Horizontal, QObject::tr("Adresse"));
-    model->setHeaderData(3, Qt::Horizontal, QObject::tr("Email"));
-    model->setHeaderData(4, Qt::Horizontal, QObject::tr("Téléphone"));
-    model->setHeaderData(5, Qt::Horizontal, QObject::tr("Spécialité"));
+    QString sql = QString("SELECT ID_F, NOM_SOCIETE, ADRESSE_F, MAIL_F, TEL_F, SPECIALITE "
+                          "FROM FOURNISSEUR "
+                          "WHERE TO_CHAR(ID_F) LIKE '%%1%' "
+                          "   OR LOWER(NOM_SOCIETE) LIKE LOWER('%%1%') "
+                          "   OR LOWER(SPECIALITE) LIKE LOWER('%%1%') "
+                          "ORDER BY ID_F").arg(critere);
+
+    model->setQuery(sql);
+
+    if (model->lastError().isValid()) {
+        qDebug() << "Erreur dans rechercher():" << model->lastError().text();
+    }
+
+    model->setHeaderData(0, Qt::Horizontal, "ID");
+    model->setHeaderData(1, Qt::Horizontal, "Nom Société");
+    model->setHeaderData(2, Qt::Horizontal, "Adresse");
+    model->setHeaderData(3, Qt::Horizontal, "Email");
+    model->setHeaderData(4, Qt::Horizontal, "Téléphone");
+    model->setHeaderData(5, Qt::Horizontal, "Spécialité");
 
     return model;
 }
 
-QSqlQueryModel* Fournisseur::statistique() const
+QSqlQueryModel* Fournisseur::trier(const QString &champ, const QString &ordre)
 {
     QSqlQueryModel *model = new QSqlQueryModel();
-    QSqlQuery query;
-    query.prepare("SELECT SPECIALITE, COUNT(ID) AS NB_FOURNISSEURS FROM FOURNISSEUR GROUP BY SPECIALITE");
-    query.exec();
-    model->setQuery(std::move(query));
 
-    // Définir les headers
-    model->setHeaderData(0, Qt::Horizontal, QObject::tr("Spécialité"));
-    model->setHeaderData(1, Qt::Horizontal, QObject::tr("Nombre de Fournisseurs"));
+    QString column;
+    if (champ == "ID" || champ == "id") column = "ID_F";
+    else if (champ == "Nom Société" || champ == "nom") column = "NOM_SOCIETE";
+    else if (champ == "Spécialité" || champ == "specialite") column = "SPECIALITE";
+    else column = "ID_F";
 
+    QString sql = QString("SELECT ID_F, NOM_SOCIETE, ADRESSE_F, MAIL_F, TEL_F, SPECIALITE "
+                          "FROM FOURNISSEUR "
+                          "ORDER BY %1 %2").arg(column).arg(ordre);
+
+    model->setQuery(sql);
+
+    if (model->lastError().isValid()) {
+        qDebug() << "Erreur dans trier():" << model->lastError().text();
+    }
+
+    model->setHeaderData(0, Qt::Horizontal, "ID");
+    model->setHeaderData(1, Qt::Horizontal, "Nom Société");
+    model->setHeaderData(2, Qt::Horizontal, "Adresse");
+    model->setHeaderData(3, Qt::Horizontal, "Email");
+    model->setHeaderData(4, Qt::Horizontal, "Téléphone");
+    model->setHeaderData(5, Qt::Horizontal, "Spécialité");
+
+    return model;
+}
+
+QSqlQueryModel* Fournisseur::statistique()
+{
+    QSqlQueryModel *model = new QSqlQueryModel();
+    model->setQuery("SELECT SPECIALITE, COUNT(*) FROM FOURNISSEUR GROUP BY SPECIALITE");
     return model;
 }

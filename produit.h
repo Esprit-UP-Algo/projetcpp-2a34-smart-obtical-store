@@ -2,44 +2,33 @@
 #define PRODUIT_H
 
 #include <QString>
-#include <QSqlQueryModel>
 #include <QSqlQuery>
+#include <QSqlQueryModel>
+#include <QDate>
 
 class Produit
 {
-private:
-    int reference;
-    QString categorie;
-    QString marque;
-    double prix;
-    int quantite;
-
 public:
     Produit();
-    Produit(int ref, QString cat, QString mar, double pr, int qte);
+    // Constructeur SANS date (ancien)
+    Produit(int, QString, QString, double, int);
+    // NOUVEAU : Constructeur AVEC date (obligatoire maintenant)
+    Produit(int ref, QString cat, QString marque, double prix, int qte, QDate date);
 
-    // Getters
-    int getReference() const { return reference; }
-    QString getCategorie() const { return categorie; }
-    QString getMarque() const { return marque; }
-    double getPrix() const { return prix; }
-    int getQuantite() const { return quantite; }
-
-    // Setters
-    void setReference(int ref) { reference = ref; }
-    void setCategorie(const QString &cat) { categorie = cat; }
-    void setMarque(const QString &mar) { marque = mar; }
-    void setPrix(double pr) { prix = pr; }
-    void setQuantite(int qte) { quantite = qte; }
-
-    // Méthodes CRUD
     bool ajouter();
     bool modifier();
-    static bool supprimer(int ref);
-    static QSqlQueryModel* afficher();
-    static QSqlQueryModel* rechercher(const QString &critere);
-    static QSqlQueryModel* trier(const QString &critere, const QString &ordre);
-    static bool exporterPDF(const QString &filePath);
+    bool annuler(int ref);
+    QSqlQueryModel* afficher();
+    QSqlQueryModel* rechercher(QString critere);
+    QSqlQueryModel* trier(QString critere, QString ordre);
+
+
+private:
+    int REF_P, QUANTITE;
+    QString CATEGORIE, MARQUE;
+    double PRIX;
+    QDate DATE_P;   // Ajouté
 };
 
 #endif // PRODUIT_H
+

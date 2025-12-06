@@ -60,11 +60,11 @@ public:
     void setPointsFidelite(int v) { pointsFidelite = v; }
 
     // ==================== VALIDATIONS ====================
-    bool isValidId() const { return id >= 100000 && id <= 999999; }
-    bool isValidAge() const { return age >= 0 && age <= 999; }
-    bool isValidPoints() const { return pointsFidelite >= 0 && pointsFidelite <= 9999; }
-    bool isValidTelephone() const { return telephone.length() == 8; }
-    bool isValidEmail() const { return email.contains("@") && email.contains("."); }
+    bool isValidId() const;
+    bool isValidAge() const;
+    bool isValidPoints() const;
+    bool isValidTelephone() const;
+    bool isValidEmail() const;
 
     // ==================== CRUD ====================
     bool ajouter(QString *errMsg = nullptr);
